@@ -1,5 +1,5 @@
 --Однотабличные запросы
---SELECT name, surname FROM student WHERE score >= 4 AND score <= 5;
+--SELECT name, surname FROM student WHERE score >= 4 AND score <= 5; -- всё ок
 --SELECT st.name, st.surname FROM student st WHERE score >= 4 AND score <= 5;
 
 --SELECT name, surname, n_group FROM student WHERE CAST(n_group AS varchar) LIKE '3%';
