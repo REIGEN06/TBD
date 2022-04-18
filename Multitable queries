@@ -1,10 +1,12 @@
 --Многотабличные запросы
+
 -- 1.Вывести все имена и фамилии студентов, и название хобби, которым занимается этот студент.
 -- SELECT st.name,
 -- 	st.surname,
 -- 	hobby.name
 -- FROM student st, hobby, students_hobby sh
 -- WHERE st.id = sh.student_id AND hobby.id = sh.hobby_id;
+
 -- 2.Вывести информацию о студенте, занимающимся хобби самое продолжительное время.
 -- SELECT st.*, hobby.name, age(sh.finished_at,sh.started_at) AS duration
 -- FROM student st, hobby, students_hobby sh
@@ -12,6 +14,7 @@
 -- AND AGE(sh.finished_at, sh.started_at) is NOT null
 -- ORDER BY duration DESC
 -- LIMIT 1;
+
 -- 3.Вывести имя, фамилию, номер зачетки и дату рождения для студентов, средний балл которых выше среднего, а сумма риска всех хобби, которыми он занимается в данный момент, больше 0.9.
 -- SELECT st.name,st.surname,st.id as №_zachet, st.bday, st.score, SUM(hobby.risk) as SUM_RISK
 -- FROM student st
@@ -20,12 +23,14 @@
 -- WHERE st.score > (SELECT SUM(score)/COUNT(score) FROM student)
 -- GROUP BY st.id
 -- HAVING SUM(hobby.risk) > 0.9;
+
 -- 4.Вывести фамилию, имя, зачетку, дату рождения, название хобби и длительность в месяцах, для всех завершенных хобби Диапазон дат.
 --  SELECT st.surname, st.name, st.id as №_zachet, st.bday, hobby.name,extract(year from age(sh.finished_at, sh.started_at)) AS months
 -- FROM student st
 -- INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- INNER JOIN hobby ON hobby.id = sh.hobby_id
 -- WHERE AGE(sh.finished_at, sh.started_at) is NOT null
+
 -- 5.Вывести фамилию, имя, зачетку, дату рождения студентов, которым исполнилось N полных лет на текущую дату, и которые имеют более 1 действующего хобби.
 -- SELECT st.surname,st.name, st.id as №_zachet, st.bday, extract(year from age(current_date, st.bday)) AS years
 -- FROM student st
@@ -33,6 +38,7 @@
 -- INNER JOIN hobby ON hobby.id = sh.hobby_id
 -- WHERE extract(year from age(current_date, st.bday)) > 18 AND (SELECT COUNT(hobby.name) FROM hobby WHERE sh.finished_at is null) > 1
 -- GROUP BY st.id;
+
 -- 6.Найти средний балл в каждой группе, учитывая только баллы студентов, которые имеют хотя бы одно действующее хобби.
 -- SELECT st.n_group, AVG(st.score) as SB
 -- FROM student st
@@ -40,6 +46,7 @@
 -- INNER JOIN hobby ON hobby.id = sh.hobby_id
 -- WHERE (SELECT COUNT(hobby.name) FROM hobby WHERE sh.finished_at is NULL) >0
 -- GROUP BY st.n_group
+
 -- 7.Найти название, риск, длительность в месяцах самого продолжительного хобби из действующих, указав номер зачетки студента.
 --  SELECT h.name, h.risk, EXTRACT(year from age(NOW(), sh.started_at)) as Months, st.id as №_zachet
 --  FROM student st
@@ -48,6 +55,7 @@
 --  WHERE sh.finished_at is NULL
 --  ORDER BY months DESC
 --  LIMIT 1
+
 -- 8.Найти все хобби, которыми увлекаются студенты, имеющие максимальный балл.
 -- SELECT h.name, st.score
 -- FROM student st
@@ -55,18 +63,21 @@
 -- INNER JOIN hobby h ON h.id = sh.hobby_id
 -- WHERE st.score=5
 -- ORDER BY st.score DESC
+
 -- 9.Найти все действующие хобби, которыми увлекаются троечники 2-го курса.
 -- SELECT h.name
 -- FROM student st
 -- INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- INNER JOIN hobby h ON h.id = sh.hobby_id
 -- WHERE st.score = 3 AND LEFT(st.n_group::VARCHAR, 1) = '2' AND sh.finished_at is NULL
+
 -- 10.Найти номера курсов, на которых более 50% студентов имеют более одного действующего хобби.
 -- SELECT LEFT(st.n_group::VARCHAR,1) AS №_course
 -- FROM student st
 -- INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- INNER JOIN hobby h ON h.id = sh.hobby_id
 -- WHERE (SELECT COUNT(hobby.name) FROM hobby WHERE sh.finished_at is null) > 1
+
 -- 11.Вывести номера группы, в которых не менее 60% студентов имеют балл не ниже 4.
 -- SELECT st.n_group, COUNT(st.score) FILTER (WHERE st.score>=4) as four_or_more, COUNT(st.id) as count_of_students
 -- FROM student st
