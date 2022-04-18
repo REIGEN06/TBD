@@ -61,3 +61,23 @@
 -- INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- INNER JOIN hobby h ON h.id = sh.hobby_id
 -- WHERE st.score = 3 AND LEFT(st.n_group::VARCHAR, 1) = '2' AND sh.finished_at is NULL
+-- 10.Найти номера курсов, на которых более 50% студентов имеют более одного действующего хобби.
+-- SELECT LEFT(st.n_group::VARCHAR,1) AS №_course
+-- FROM student st
+-- INNER JOIN students_hobby sh ON st.id = sh.student_id
+-- INNER JOIN hobby h ON h.id = sh.hobby_id
+-- WHERE (SELECT COUNT(hobby.name) FROM hobby WHERE sh.finished_at is null) > 1
+-- 11.Вывести номера группы, в которых не менее 60% студентов имеют балл не ниже 4.
+-- SELECT st.n_group, COUNT(st.score) FILTER (WHERE st.score>=4) as four_or_more, COUNT(st.id) as count_of_students
+-- FROM student st
+-- GROUP BY st.n_group
+-- WHERE four_or_more> count_of_students*0.6
+--сверху не работает почему-то, поэтому пишу с костылем в виде второго FROM
+-- SELECT helper.n_group
+-- FROM (SELECT 
+-- 	  st.n_group,
+-- 	  COUNT(st.score) FILTER (WHERE st.score>=4) as four_or_more,
+-- 	  COUNT(st.id) as count_of_students
+-- 	  FROM student st
+-- 	  GROUP BY st.n_group) helper
+-- WHERE four_or_more> count_of_students*0.6
