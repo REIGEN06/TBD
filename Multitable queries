@@ -92,3 +92,16 @@
 -- 	  FROM student st
 -- 	  GROUP BY st.n_group) helper
 -- WHERE four_or_more> count_of_students*0.6
+-- 12.Для каждого курса подсчитать количество различных действующих хобби на курсе.
+-- SELECT LEFT(st.n_group::VARCHAR,1) course, COUNT(DISTINCT h.id)
+-- FROM student st
+-- INNER JOIN students_hobby sh ON st.id = sh.student_id
+-- INNER JOIN hobby h ON h.id = sh.hobby_id
+-- GROUP BY LEFT(st.n_group::VARCHAR,1)
+-- 13.Вывести номер зачётки, фамилию и имя, дату рождения и номер курса для всех отличников, не имеющих хобби.
+-- Отсортировать данные по возрастанию в пределах курса по убыванию даты рождения. (у меня таких отличников нет, так что я поставил знак "<", чтобы проверить, что работает )
+-- SELECT st.id, st.name, st.surname, st.bday, LEFT(st.n_group::VARCHAR,1) course
+-- FROM student st WHERE st.score <5 AND st.id NOT IN
+-- (SELECT sh.student_id
+--  FROM students_hobby sh)
+--  ORDER BY course, bday DESC
