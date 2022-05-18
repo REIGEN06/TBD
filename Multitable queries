@@ -124,3 +124,18 @@
 -- FROM students_hobby sh
 -- GROUP BY sh.hobby_id
 -- ORDER BY COUNT (sh.hobby_id) DESC LIMIT 1)
+-- 18.Вывести ИД 3х хобби с максимальным риском.
+-- SELECT h.id, h.risk
+-- FROM hobby h
+-- ORDER BY risk DESC LIMIT 3
+-- 19.Вывести 10 студентов, которые занимаются одним (или несколькими) хобби самое продолжительно время.
+--coalesce заменяет null на значение, которое указано после запятой - в данном случае на now - текущее время
+-- SELECT st.name, AGE(COALESCE(finished_at,NOW()) , started_at) as time
+-- FROM student st INNER JOIN students_hobby sh ON st.id = sh.student_id
+-- ORDER BY time DESC LIMIT 10
+-- 20.Вывести номера групп (без повторений), в которых учатся студенты из предыдущего запроса.
+-- !!!!!! у меня не работает вообще ничего в селекте кроме sub.name, на остальных он говорит column sub.n_group does not exist, пробовал со всеми полями
+-- SELECT DISTINCT sub.n_group
+-- FROM (SELECT st.name, AGE(COALESCE(finished_at,NOW()) , started_at) as time
+-- FROM student st INNER JOIN students_hobby sh ON st.id = sh.student_id
+-- ORDER BY time DESC LIMIT 10) sub
