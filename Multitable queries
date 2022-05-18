@@ -92,12 +92,14 @@
 -- 	  FROM student st
 -- 	  GROUP BY st.n_group) helper
 -- WHERE four_or_more> count_of_students*0.6
+
 -- 12.Для каждого курса подсчитать количество различных действующих хобби на курсе.
 -- SELECT LEFT(st.n_group::VARCHAR,1) course, COUNT(DISTINCT h.id)
 -- FROM student st
 -- INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- INNER JOIN hobby h ON h.id = sh.hobby_id
 -- GROUP BY LEFT(st.n_group::VARCHAR,1)
+
 -- 13.Вывести номер зачётки, фамилию и имя, дату рождения и номер курса для всех отличников, не имеющих хобби.
 -- Отсортировать данные по возрастанию в пределах курса по убыванию даты рождения. (у меня таких отличников нет, так что я поставил знак "<", чтобы проверить, что работает )
 -- SELECT st.id, st.name, st.surname, st.bday, LEFT(st.n_group::VARCHAR,1) course
@@ -111,11 +113,13 @@
 -- SELECT h.name, COUNT(sh.student_id)
 -- FROM hobby h INNER JOIN students_hobby sh ON h.id=sh.hobby_id
 -- GROUP BY h.name
+
 -- 16.Вывести ИД самого популярного хобби.
 -- SELECT sh.hobby_id, COUNT (sh.hobby_id)
 -- FROM students_hobby sh
 -- GROUP BY sh.hobby_id
 -- ORDER BY COUNT (sh.hobby_id) DESC LIMIT 1
+
 -- 17.Вывести всю информацию о студентах, занимающихся самым популярным хобби.
 -- SELECT st.*
 -- FROM student st INNER JOIN students_hobby sh ON st.id = sh.student_id
@@ -124,15 +128,18 @@
 -- FROM students_hobby sh
 -- GROUP BY sh.hobby_id
 -- ORDER BY COUNT (sh.hobby_id) DESC LIMIT 1)
+
 -- 18.Вывести ИД 3х хобби с максимальным риском.
 -- SELECT h.id, h.risk
 -- FROM hobby h
 -- ORDER BY risk DESC LIMIT 3
+
 -- 19.Вывести 10 студентов, которые занимаются одним (или несколькими) хобби самое продолжительно время.
 --coalesce заменяет null на значение, которое указано после запятой - в данном случае на now - текущее время
 -- SELECT st.name, AGE(COALESCE(finished_at,NOW()) , started_at) as time
 -- FROM student st INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- ORDER BY time DESC LIMIT 10
+
 -- 20.Вывести номера групп (без повторений), в которых учатся студенты из предыдущего запроса.
 -- !!!!!! у меня не работает вообще ничего в селекте кроме sub.name, на остальных он говорит column sub.n_group does not exist, пробовал со всеми полями
 -- SELECT DISTINCT sub.n_group
