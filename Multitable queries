@@ -151,3 +151,25 @@
 -- FROM (SELECT st.name, AGE(COALESCE(finished_at,NOW()) , started_at) as time
 -- FROM student st INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- ORDER BY time DESC LIMIT 10) sub
+
+-- 21.Создать представление, которое выводит номер зачетки, имя и фамилию студентов, отсортированных по убыванию среднего балла.
+-- CREATE OR REPLACE VIEW st_srBall AS
+-- SELECT st.id, st.name, st.surname
+-- FROM student st
+-- ORDER BY st.score DESC
+
+-- 22.Представление: найти каждое популярное хобби на каждом курсе.
+-- CREATE OR REPLACE VIEW h_popular AS
+-- SELECT DISTINCT ON (1) st.n_group/1000 course, h.name, count(h.name)
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id 
+-- GROUP BY course, h.name
+-- ORDER BY course, count(h.name) DESC
+
+-- 23.Представление: найти хобби с максимальным риском среди самых популярных хобби на 2 курсе.
+-- CREATE OR REPLACE VIEW h_maxriskpopular AS
+-- SELECT  h.name, h.risk, count(h.name)
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id 
+-- WHERE st.n_group/1000 = 2
+-- GROUP BY h.name, h.risk
+-- ORDER BY count(h.name) DESC, h.risk DESC
+-- LIMIT 1
