@@ -173,3 +173,22 @@
 -- GROUP BY h.name, h.risk
 -- ORDER BY count(h.name) DESC, h.risk DESC
 -- LIMIT 1
+
+-- 24.Представление: для каждого курса подсчитать количество студентов на курсе и количество отличников.
+-- CREATE OR REPLACE VIEW h_countScount5 AS
+-- SELECT st.n_group/1000 course, COUNT (st.id) students, COUNT(st.id) FILTER (WHERE st.score >=5) five
+-- FROM student st
+-- GROUP BY course
+
+-- 25.Представление: самое популярное хобби среди всех студентов.
+-- CREATE OR REPLACE VIEW h_themostpopular AS
+-- SELECT h.name, count (h.name) students
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id 
+-- GROUP BY h.name 
+-- ORDER BY students DESC
+-- LIMIT 1
+
+-- 26.Создать обновляемое представление.
+--CREATE OR REPLACE VIEW updatable_test1 AS
+-- SELECT * 
+-- FROM student
