@@ -108,6 +108,11 @@
 --  FROM students_hobby sh)
 --  ORDER BY course, bday DESC
 -- 14.Создать представление, в котором отображается вся информация о студентах, которые продолжают заниматься хобби в данный момент и занимаются им как минимум 5 лет.
+-- CREATE OR REPLACE VIEW hobby_5yea AS
+-- SELECT st.*
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id
+-- WHERE sh.finished_at IS NULL AND EXTRACT(YEAR FROM AGE(NOW(),sh.started_at)) > 5
+-- изначально было current_date-started_at > 365 * 5
 
 -- 15.Для каждого хобби вывести количество людей, которые им занимаются.
 -- SELECT h.name, COUNT(sh.student_id)
