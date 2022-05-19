@@ -210,3 +210,8 @@
 -- SELECT EXTRACT(YEAR FROM st.bday) AS YEAR, COUNT(sh.hobby_id)
 -- FROM student st INNER JOIN students_hobby sh ON st.id = sh.student_id
 -- GROUP BY YEAR
+
+-- 30.Для каждой буквы алфавита в имени найти максимальный и минимальный риск хобби.
+-- SELECT substr(st.name, 1, 1) letter, min(h.risk), max (h.risk)
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id 
+-- GROUP BY letter
