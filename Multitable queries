@@ -215,3 +215,61 @@
 -- SELECT substr(st.name, 1, 1) letter, min(h.risk), max (h.risk)
 -- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id 
 -- GROUP BY letter
+
+-- 31.Для каждого месяца из даты рождения вывести средний балл студентов, которые занимаются хобби с названием «Футбол»
+-- SELECT EXTRACT(MONTH FROM st.bday) AS YEAR, AVG(st.score) score, h.name
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id 
+-- GROUP BY year, score, h.name
+-- HAVING h.name = 'Футбол'
+
+-- 32.Вывести информацию о студентах, которые занимались или занимаются хотя бы 1 хобби в следующем формате: Имя: Иван, фамилия: Иванов, группа: 1234
+-- SELECT st.name Имя,st.surname Фамилия,st.n_group Группа
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id
+-- WHERE st.id  IN
+-- (SELECT sh.student_id
+-- FROM students_hobby sh)
+-- GROUP BY Имя, Фамилия, Группа
+
+-- 33.Найдите в фамилии в каком по счёту символа встречается «ов». Если 0 (т.е. не встречается, то выведите на экран «не найдено».
+-- SELECT st.surname, CASE
+--     WHEN POSITION('ов' IN st.surname) = 0 THEN 'Не найдено'
+--     ELSE POSITION('ов' IN st.surname)::VARCHAR
+--   	END
+-- FROM student st
+
+-- 34.Дополните фамилию справа символом # до 10 символов
+-- SELECT rpad(st.surname, 10, '#') Surname
+-- FROM student st
+
+-- 35.При помощи функции удалите все символы # из предыдущего запроса.
+-- SELECT trim(BOTH '#' FROM rpad(st.surname, 10, '#')) Surname
+-- FROM student st
+
+-- 36.Выведите на экран сколько дней в апреле 2018 года.
+-- SELECT EXTRACT(DAY FROM (timestamp '2018-05-01') - (timestamp '2018-04-01'))
+
+-- 37.Выведите на экран какого числа будет ближайшая суббота.
+-- DAYOFWEEK не работает, нашел сокращенную версию DOW
+-- 1-пн, 2-вт,3-ср,4-чт,5-пт,6-сб,7-вс,8-пн, и т.д..
+-- SELECT current_date - cast(extract(DOW from current_date) as int) +6
+
+-- 38.Выведите на экран век, а также какая сейчас неделя года и день года.
+-- то же самое с dayoftheyear
+-- SELECT extract(century from current_date) Век, extract(week from current_date) Неделя, extract(doy from current_date) День
+
+-- 39.Выведите всех студентов, которые занимались или занимаются хотя бы 1 хобби. Выведите на экран Имя, Фамилию, Названию хобби, а также надпись «занимается», если студент продолжает заниматься хобби в данный момент или «закончил», если уже не занимает.
+-- SELECT st.name Имя, st.surname Фамилия, h.name Хобби, CASE
+--     WHEN (sh.finished_at IS NULL) THEN 'Занимается'
+--     WHEN (sh.finished_at IS NOT NULL) THEN 'Закончил'
+--   	END Надпись
+-- FROM student st INNER JOIN students_hobby sh ON st.id=sh.student_id INNER JOIN hobby h ON h.id=sh.hobby_id
+
+-- 40.Для каждой группы вывести сколько студентов учится на 5,4,3,2. Использовать обычное математическое округление. Итоговый результат должен выглядеть примерно в таком виде:
+-- SELECT 
+--   st.n_group "Группа\Оценка", 
+--   COUNT(st.score) FILTER (WHERE ROUND(st.score) = 2) "2",
+--   COUNT(st.score) FILTER (WHERE ROUND(st.score) = 3) "3",
+--   COUNT(st.score) FILTER (WHERE ROUND(st.score) = 4) "4",
+--   COUNT(st.score) FILTER (WHERE ROUND(st.score) = 5) "5"
+-- FROM student st
+-- GROUP BY "Группа\Оценка"
